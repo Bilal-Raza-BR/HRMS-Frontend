@@ -54,12 +54,15 @@ const CompanyDashboardLayout = ({ toggleTheme, mode }) => {
 
       const decoded = jwtDecode(token);
 
-      const res = await fetch(`http://localhost:5000/api/${slug}/dashboard`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      });
+      const res = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/${slug}/dashboard`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
       const data = await res.json();
       if (!res.ok || !data.data) return;

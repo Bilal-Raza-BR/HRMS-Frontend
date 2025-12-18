@@ -56,7 +56,7 @@ const ApplicationTable = ({ applications, companySlug, refreshData, currentUser 
   const handleStatusUpdate = async (email, position, status, roleToAssign, name = "") => {
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch(`http://localhost:5000/api/${companySlug}/applications/status`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/${companySlug}/applications/status`, {
         method: "PATCH",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -122,7 +122,7 @@ const ApplicationTable = ({ applications, companySlug, refreshData, currentUser 
     const confirmDelete = async () => {
       try {
         const token = localStorage.getItem("token");
-        const res = await fetch(`http://localhost:5000/api/${companySlug}/applications/delete`, {
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/${companySlug}/applications/delete`, {
           method: "DELETE",
           headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
           body: JSON.stringify({ applicationId }),
@@ -146,7 +146,7 @@ const ApplicationTable = ({ applications, companySlug, refreshData, currentUser 
     const confirmDeleteAll = async () => {
       try {
         const token = localStorage.getItem("token");
-        const res = await fetch(`http://localhost:5000/api/${companySlug}/applications/delete-all`, { method: "DELETE", headers: { Authorization: `Bearer ${token}` } });
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/${companySlug}/applications/delete-all`, { method: "DELETE", headers: { Authorization: `Bearer ${token}` } });
         const data = await res.json();
         if (res.ok) {
           toast.success(data.message);

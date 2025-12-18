@@ -38,7 +38,7 @@ const ApplyModal = ({ open, handleClose, slug }) => {
     body.append('resume', file);
 
     try {
-      const res = await fetch(`http://localhost:5000/api/job/apply/${slug}`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/job/apply/${slug}`, {
         method: 'POST',
         body
       });

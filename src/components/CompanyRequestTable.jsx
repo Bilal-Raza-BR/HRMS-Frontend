@@ -37,7 +37,7 @@ const CompanyRequestTable = () => {
 
   const fetchRequests = async () => {
     try {
-      const res = await fetch("http://localhost:5000/api/admin/requests", {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/admin/requests`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("ownerToken")}`
         },
@@ -71,7 +71,7 @@ const CompanyRequestTable = () => {
   const handleDecision = async (id, status, requestData) => {
     try {
       const patchRes = await fetch(
-        `http://localhost:5000/api/admin/request/${id}/handled`,
+        `${import.meta.env.VITE_API_URL}/api/admin/request/${id}/handled`,
         {
           method: "PATCH",
           headers: {
@@ -93,7 +93,7 @@ const CompanyRequestTable = () => {
 
         if (status === "approved") {
           const inviteRes = await fetch(
-            "http://localhost:5000/api/admin/invite-company",
+            `${import.meta.env.VITE_API_URL}/api/admin/invite-company`,
             {
               method: "POST",
               headers: {
@@ -174,7 +174,7 @@ const CompanyRequestTable = () => {
   const handleDeleteRequest = async (id) => {
     const confirmDelete = async () => {
       try {
-        const res = await fetch(`http://localhost:5000/api/admin/request/${id}`, {
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/admin/request/${id}`, {
           method: "DELETE",
           headers: {
             Authorization: `Bearer ${localStorage.getItem("ownerToken")}`,
@@ -199,7 +199,7 @@ const CompanyRequestTable = () => {
   const handleDeleteAllRequests = async () => {
     const confirmDeleteAll = async () => {
       try {
-        const res = await fetch(`http://localhost:5000/api/admin/requests/delete-all`, {
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/admin/requests/delete-all`, {
           method: "DELETE",
           headers: {
             Authorization: `Bearer ${localStorage.getItem("ownerToken")}`,

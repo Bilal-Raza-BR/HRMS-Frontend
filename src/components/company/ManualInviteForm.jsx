@@ -55,7 +55,7 @@ const ManualInviteForm = () => {
     const token = localStorage.getItem("token");
 
     try {
-      const response = await fetch(`http://localhost:5000/api/${slug}/invite/manual`, { // ✅ Use slug in URL
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/${slug}/invite/manual`, { // ✅ Use slug in URL
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

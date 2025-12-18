@@ -167,7 +167,7 @@ const CompanyInviteFormPage = () => {
     });
 
     try {
-      const res = await fetch("http://localhost:5000/api/register/company-admin", {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/register/company-admin`, {
         method: "POST",
         body: fd,
       });

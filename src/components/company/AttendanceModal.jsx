@@ -34,7 +34,7 @@ const AttendanceModal = ({ open, onClose, companySlug }) => {
     setLoading(true);
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch(`http://localhost:5000/api/${slug}/attendance/mark`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/${slug}/attendance/mark`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

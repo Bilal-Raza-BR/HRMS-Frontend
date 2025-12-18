@@ -36,7 +36,7 @@ const CompanyListTable = ({ refresh }) => {
 
   const fetchCompanies = async () => {
     try {
-      const res = await fetch("http://localhost:5000/api/admin/stats", {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/admin/stats`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("ownerToken")}`,
         },
@@ -61,7 +61,7 @@ const CompanyListTable = ({ refresh }) => {
   const toggleCompanyStatus = async (slug, currentStatus) => {
     setUpdatingSlug(slug);
     try {
-      const res = await fetch(`http://localhost:5000/api/owner/company/${slug}/status`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/owner/company/${slug}/status`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
@@ -113,7 +113,7 @@ const CompanyListTable = ({ refresh }) => {
   const handleDeleteCompany = async (slug) => {
     const confirmDelete = async () => {
       try {
-        const res = await fetch(`http://localhost:5000/api/owner/company/${slug}`, {
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/owner/company/${slug}`, {
           method: "DELETE",
           headers: {
             Authorization: `Bearer ${localStorage.getItem("ownerToken")}`,

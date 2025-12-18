@@ -52,7 +52,7 @@ const AttendanceManagement = ({ slug }) => {
       return;
     }
     try {
-      const response = await fetch(`http://localhost:5000/api/${slug}/attendance/all-today`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/${slug}/attendance/all-today`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       const result = await response.json();
@@ -72,7 +72,7 @@ const AttendanceManagement = ({ slug }) => {
 
   const apiCall = async (endpoint, method, body) => {
     const token = localStorage.getItem("token");
-    return fetch(`http://localhost:5000/api/${slug}/${endpoint}`, {
+    return fetch(`${import.meta.env.VITE_API_URL}/api/${slug}/${endpoint}`, {
       method,
       headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
       body: JSON.stringify(body),

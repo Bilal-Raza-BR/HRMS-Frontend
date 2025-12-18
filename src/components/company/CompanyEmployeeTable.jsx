@@ -85,7 +85,7 @@ const CompanyEmployeeTable = ({ slug, initialEmployees = [] }) => {
     }
 
     try {
-      const response = await fetch(`http://localhost:5000/api/${slug}/users/salary`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/${slug}/users/salary`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
@@ -142,7 +142,7 @@ const CompanyEmployeeTable = ({ slug, initialEmployees = [] }) => {
     }
 
     try {
-      const response = await fetch(`http://localhost:5000/api/${slug}/users/status`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/${slug}/users/status`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
@@ -183,7 +183,7 @@ const CompanyEmployeeTable = ({ slug, initialEmployees = [] }) => {
       }
 
       try {
-        const response = await fetch(`http://localhost:5000/api/${slug}/users/delete`, {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/${slug}/users/delete`, {
           method: 'DELETE',
           headers: {
             'Content-Type': 'application/json',

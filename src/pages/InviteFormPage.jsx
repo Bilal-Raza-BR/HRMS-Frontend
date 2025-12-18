@@ -111,7 +111,7 @@ const InviteFormPage = () => {
       formData.append(key, value)
     );
     
-    const companyRes = await fetch("http://localhost:5000/api/register/company", {
+    const companyRes = await fetch(`${import.meta.env.VITE_API_URL}/api/register/company`, {
       method: "POST",
       body: formData,
     });
@@ -129,7 +129,7 @@ const InviteFormPage = () => {
     );
     adminFormData.append("companySlug", companySlug); // manually append slug
 
-    const adminRes = await fetch("http://localhost:5000/api/register/company-admin", {
+    const adminRes = await fetch(`${import.meta.env.VITE_API_URL}/api/register/company-admin`, {
       method: "POST",
       body: adminFormData,
     });

@@ -33,7 +33,7 @@ const LeaveRequestTable = ({ slug }) => {
   const fetchLeaveRequests = useCallback(async () => {
     const token = localStorage.getItem("token");
     try {
-      const response = await fetch(`http://localhost:5000/api/${slug}/leaves/all`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/${slug}/leaves/all`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       const result = await response.json();
@@ -65,7 +65,7 @@ const LeaveRequestTable = ({ slug }) => {
   const handleStatusUpdate = async (userEmail, leaveIndex, status) => {
     const token = localStorage.getItem("token");
     try {
-      const response = await fetch(`http://localhost:5000/api/${slug}/leaves/update`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/${slug}/leaves/update`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
@@ -111,7 +111,7 @@ const LeaveRequestTable = ({ slug }) => {
     const confirmDelete = async () => {
       const token = localStorage.getItem("token");
       try {
-        const response = await fetch(`http://localhost:5000/api/${slug}/leaves/delete`, {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/${slug}/leaves/delete`, {
           method: 'DELETE',
           headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
           body: JSON.stringify({ userEmail, leaveId }),
@@ -135,7 +135,7 @@ const LeaveRequestTable = ({ slug }) => {
     const confirmDeleteAll = async () => {
       const token = localStorage.getItem("token");
       try {
-        const response = await fetch(`http://localhost:5000/api/${slug}/leaves/delete-all`, {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/${slug}/leaves/delete-all`, {
           method: 'DELETE',
           headers: { 'Authorization': `Bearer ${token}` }
         });

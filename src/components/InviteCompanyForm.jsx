@@ -56,7 +56,7 @@ const InviteCompanyForm = () => {
 
     setLoading(true);
     try {
-      const res = await fetch("http://localhost:5000/api/admin/invite-company", {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/admin/invite-company`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

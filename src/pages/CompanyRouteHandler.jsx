@@ -26,7 +26,7 @@ const CompanyRouteHandler = ({toggleTheme,mode}) => {
         const decoded = jwtDecode(token);
         // console.log("Decoded:", decoded);
 
-        const res = await fetch(`http://localhost:5000/api/${slug}/dashboard`, {
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/${slug}/dashboard`, {
           headers: {
             Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",

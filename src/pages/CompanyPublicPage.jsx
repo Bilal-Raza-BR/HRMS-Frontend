@@ -36,7 +36,7 @@ const CompanyPublicPage = ({ refresh }) => {
   const fetchCompany = async () => {
     setLoading(true);
     try {
-      const res = await fetch(`http://localhost:5000/api/public/${slug}`);
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/public/${slug}`);
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || "Company not found");
       setCompany(data);
@@ -55,7 +55,7 @@ const CompanyPublicPage = ({ refresh }) => {
     if (!email || !password) return toast.error("Please fill all fields");
 
     try {
-      const res = await fetch(`http://localhost:5000/api/login/${slug}`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/login/${slug}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),

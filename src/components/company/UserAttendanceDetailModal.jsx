@@ -37,7 +37,7 @@ const UserAttendanceDetailModal = ({ open, onClose, user, slug }) => {
     const token = localStorage.getItem("token");
 
     try {
-      const response = await fetch(`http://localhost:5000/api/${slug}/attendance/user/${user.userId}?month=${month}`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/${slug}/attendance/user/${user.userId}?month=${month}`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       const result = await response.json();

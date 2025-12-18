@@ -27,7 +27,7 @@ const SearchCompanyPage = () => {
 
   const fetchCompanies = async () => {
     try {
-      const res = await fetch("http://localhost:5000/api/company/get", {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/company/get`, {
         headers: { "Content-Type": "application/json" },
       });
       const data = await res.json();

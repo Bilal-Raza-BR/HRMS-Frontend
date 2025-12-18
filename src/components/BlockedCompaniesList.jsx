@@ -32,7 +32,7 @@ const BlockedCompaniesList = ({refresh}) => {
   // Fetch only blocked companies
   const fetchBlockedCompanies = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/admin/stats', {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/admin/stats`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('ownerToken')}`,
         },
@@ -56,7 +56,7 @@ const BlockedCompaniesList = ({refresh}) => {
   const handleUnblock = async (slug) => {
     try {
       const res = await fetch(
-        `http://localhost:5000/api/owner/company/${slug}/status`,
+        `${import.meta.env.VITE_API_URL}/api/owner/company/${slug}/status`,
         {
           method: 'PATCH',
           headers: {

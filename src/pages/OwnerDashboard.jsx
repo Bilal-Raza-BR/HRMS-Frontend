@@ -57,7 +57,7 @@ const OwnerDashboard = ({ toggleTheme, mode }) => {
     const fetchOwner = async () => {
       try {
         setLoading(true);
-        const res = await fetch("http://localhost:5000/api/owner/profile", {
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/owner/profile`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("ownerToken")}`,
           },
@@ -75,7 +75,7 @@ const OwnerDashboard = ({ toggleTheme, mode }) => {
 
     const fetchStats = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/admin/stats", {
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/admin/stats`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("ownerToken")}`,
           },

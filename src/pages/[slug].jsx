@@ -19,7 +19,9 @@ const CompanyPage = () => {
 
   const fetchCompanyData = async () => {
     try {
-      const res = await fetch(`http://localhost:5000/api/company/${slug}`);
+      const res = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/company/${slug}`
+      );
       const data = await res.json();
       setCompany(data);
     } catch (err) {
