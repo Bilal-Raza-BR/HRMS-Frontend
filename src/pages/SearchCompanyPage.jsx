@@ -39,6 +39,10 @@ const SearchCompanyPage = () => {
       setLoading(false);
     }
   };
+fetch("https://hrms-backend-9iily112b-bilal-raza-brs-projects.vercel.app/api/company/get")
+  .then(res => res.json())
+  .then(data => console.log("SUCCESS ✅", data))
+  .catch(err => console.error("ERROR ❌", err));
 
   useEffect(() => {
     fetchCompanies();
