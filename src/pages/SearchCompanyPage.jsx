@@ -25,35 +25,21 @@ const SearchCompanyPage = () => {
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
 
-  // const fetchCompanies = async () => {
-  //   try {
-  //     const res = await fetch(`${import.meta.env.VITE_API_URL}/api/company/get`, {
-  //       headers: { "Content-Type": "application/json" },
-  //     });
-  //     const data = await res.json();
-  //     setAllCompanies(data.companies || []);
-  //     setFiltered(data.companies || []);
-  //   } catch (err) {
-  //     console.error("Failed to load companies:", err);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
-const fetchCompanies = async () => {
-  try {
-    const res = await fetch(
-      `${import.meta.env.VITE_API_URL}/api/company/get`
-    );
-
-    const data = await res.json();
-    setAllCompanies(data.companies || []);
-    setFiltered(data.companies || []);
-  } catch (err) {
-    console.error("Failed to load companies:", err);
-  } finally {
-    setLoading(false);
-  }
-};
+  const fetchCompanies = async () => {
+    try {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/company/get`, {
+        headers: { "Content-Type": "application/json" },
+         credentials: "include",
+      });
+      const data = await res.json();
+      setAllCompanies(data.companies || []);
+      setFiltered(data.companies || []);
+    } catch (err) {
+      console.error("Failed to load companies:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     fetchCompanies();
