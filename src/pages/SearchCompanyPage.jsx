@@ -29,7 +29,7 @@ const SearchCompanyPage = () => {
     try {
       const res = await fetch(`${import.meta.env.VITE_API_URL}/api/company/get`, {
         headers: { "Content-Type": "application/json" },
-         credentials: "include",
+        //  credentials: "include",
       });
       const data = await res.json();
       setAllCompanies(data.companies || []);
