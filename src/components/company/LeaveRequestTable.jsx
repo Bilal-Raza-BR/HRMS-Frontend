@@ -17,6 +17,10 @@ import {
   Button,
   useTheme,
   useMediaQuery,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
 } from '@mui/material';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
@@ -29,6 +33,9 @@ const LeaveRequestTable = ({ slug }) => {
   const [allLeaves, setAllLeaves] = useState(null);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [deleteTarget, setDeleteTarget] = useState({ type: null, userEmail: null, leaveId: null });
 
   const fetchLeaveRequests = useCallback(async () => {
     const token = localStorage.getItem("token");
@@ -85,73 +92,46 @@ const LeaveRequestTable = ({ slug }) => {
     }
   };
 
-  const ConfirmationToast = ({ onConfirm, closeToast, message }) => (
-    <Box>
-      <Typography sx={{ mb: 2 }}>{message}</Typography>
-      <Stack direction="row" spacing={2} justifyContent="flex-end">
-        <Button variant="outlined" size="small" onClick={closeToast}>
-          Cancel
-        </Button>
-        <Button
-          variant="contained"
-          color="error"
-          size="small"
-          onClick={() => {
-            onConfirm();
-            closeToast();
-          }}
-        >
-          Confirm
-        </Button>
-      </Stack>
-    </Box>
-  );
-
   const handleDelete = (userEmail, leaveId) => {
-    const confirmDelete = async () => {
-      const token = localStorage.getItem("token");
-      try {
-        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/${slug}/leaves/delete`, {
-          method: 'DELETE',
-          headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
-          body: JSON.stringify({ userEmail, leaveId }),
-        });
-        const result = await response.json();
-        if (response.ok) {
-          toast.success(result.message);
-          fetchLeaveRequests(); // Refresh data
-        } else {
-          toast.error(result.message);
-        }
-      } catch (error) {
-        toast.error("Operation failed.");
-      }
-    };
-
-    toast(<ConfirmationToast onConfirm={confirmDelete} message="Are you sure you want to delete this leave request?" />, { autoClose: false, closeButton: false });
+    setDeleteTarget({ type: 'single', userEmail, leaveId });
+    setDeleteModalOpen(true);
   };
 
   const handleDeleteAll = () => {
-    const confirmDeleteAll = async () => {
-      const token = localStorage.getItem("token");
-      try {
-        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/${slug}/leaves/delete-all`, {
+    setDeleteTarget({ type: 'all' });
+    setDeleteModalOpen(true);
+  };
+
+  const handleConfirmDelete = async () => {
+    const token = localStorage.getItem("token");
+    try {
+      let response;
+      if (deleteTarget.type === 'all') {
+        response = await fetch(`${import.meta.env.VITE_API_URL}/api/${slug}/leaves/delete-all`, {
           method: 'DELETE',
           headers: { 'Authorization': `Bearer ${token}` }
         });
-        const result = await response.json();
-        if (response.ok) {
-          toast.success(result.message);
-          fetchLeaveRequests(); // Refresh data
-        } else {
-          toast.error(result.message);
-        }
-      } catch (error) {
-        toast.error("Operation failed.");
+      } else {
+        response = await fetch(`${import.meta.env.VITE_API_URL}/api/${slug}/leaves/delete`, {
+          method: 'DELETE',
+          headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+          body: JSON.stringify({ userEmail: deleteTarget.userEmail, leaveId: deleteTarget.leaveId }),
+        });
       }
-    };
 
-    toast(<ConfirmationToast onConfirm={confirmDeleteAll} message="Are you sure you want to delete ALL leave requests? This action cannot be undone." />, { autoClose: false, closeButton: false });
+      const result = await response.json();
+      if (response.ok) {
+        toast.success(result.message);
+        fetchLeaveRequests(); // Refresh data
+      } else {
+        toast.error(result.message);
+      }
+    } catch (error) {
+      toast.error("Operation failed.");
+    } finally {
+      setDeleteModalOpen(false);
+      setDeleteTarget({ type: null, userEmail: null, leaveId: null });
+    }
   };
 
   const statusChip = (status) => {
@@ -256,6 +236,26 @@ const LeaveRequestTable = ({ slug }) => {
           No pending leave requests.
         </Typography>
       )}
+
+      <Dialog
+        open={deleteModalOpen}
+        onClose={() => setDeleteModalOpen(false)}
+        maxWidth="xs"
+        fullWidth
+      >
+        <DialogTitle sx={{ fontWeight: "bold" }}>Confirm Delete</DialogTitle>
+        <DialogContent>
+          <Typography>
+            {deleteTarget.type === "all"
+              ? "Are you sure you want to delete ALL leave requests? This action cannot be undone."
+              : "Are you sure you want to delete this leave request?"}
+          </Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setDeleteModalOpen(false)} color="inherit">Cancel</Button>
+          <Button onClick={handleConfirmDelete} variant="contained" color="error">Delete</Button>
+        </DialogActions>
+      </Dialog>
     </Paper>
   );
 };

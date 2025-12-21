@@ -50,6 +50,9 @@ const ApplicationTable = ({ applications, companySlug, refreshData, currentUser 
   const [selectedHireRole, setSelectedHireRole] = useState("employee");
   const [hireTarget, setHireTarget] = useState(null); // {email, position, name}
 
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [deleteTarget, setDeleteTarget] = useState({ type: null, id: null });
+
   const isAdminOrHR = ["admin", "hr"].includes(currentUser.role);
   const isAdmin = currentUser.role === "admin";
 
@@ -96,70 +99,48 @@ const ApplicationTable = ({ applications, companySlug, refreshData, currentUser 
     setHireModalOpen(false);
   };
 
-  const ConfirmationToast = ({ onConfirm, closeToast, message }) => (
-    <Box>
-      <Typography sx={{ mb: 2 }}>{message}</Typography>
-      <Stack direction="row" spacing={2} justifyContent="flex-end">
-        <Button variant="outlined" size="small" onClick={closeToast}>
-          Cancel
-        </Button>
-        <Button
-          variant="contained"
-          color="error"
-          size="small"
-          onClick={() => {
-            onConfirm();
-            closeToast();
-          }}
-        >
-          Confirm
-        </Button>
-      </Stack>
-    </Box>
-  );
-
-  const handleDelete = async (applicationId) => {
-    const confirmDelete = async () => {
-      try {
-        const token = localStorage.getItem("token");
-        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/${companySlug}/applications/delete`, {
-          method: "DELETE",
-          headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
-          body: JSON.stringify({ applicationId }),
-        });
-        const data = await res.json();
-        if (res.ok) {
-          toast.success(data.message);
-          refreshData();
-        } else {
-          toast.error(data.message || "Failed to delete application.");
-        }
-      } catch (err) {
-        toast.error("Server error occurred");
-      }
-    };
-
-    toast(<ConfirmationToast onConfirm={confirmDelete} message="Are you sure you want to delete this application?" />, { autoClose: false, closeButton: false });
+  const handleDelete = (applicationId) => {
+    setDeleteTarget({ type: "single", id: applicationId });
+    setDeleteModalOpen(true);
   };
 
-  const handleDeleteAll = async () => {
-    const confirmDeleteAll = async () => {
-      try {
-        const token = localStorage.getItem("token");
-        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/${companySlug}/applications/delete-all`, { method: "DELETE", headers: { Authorization: `Bearer ${token}` } });
-        const data = await res.json();
-        if (res.ok) {
-          toast.success(data.message);
-          refreshData();
-        } else {
-          toast.error(data.message || "Failed to delete all applications.");
-        }
-      } catch (err) {
-        toast.error("Server error occurred");
-      }
-    };
+  const handleDeleteAll = () => {
+    setDeleteTarget({ type: "all" });
+    setDeleteModalOpen(true);
+  };
 
-    toast(<ConfirmationToast onConfirm={confirmDeleteAll} message="Are you sure you want to delete ALL applications? This action cannot be undone." />, { autoClose: false, closeButton: false });
+  const handleConfirmDelete = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      let res;
+
+      if (deleteTarget.type === "all") {
+        res = await fetch(`${import.meta.env.VITE_API_URL}/api/${companySlug}/applications/delete-all`, {
+          method: "DELETE",
+          headers: { Authorization: `Bearer ${token}` },
+        });
+      } else {
+        res = await fetch(`${import.meta.env.VITE_API_URL}/api/${companySlug}/applications/delete`, {
+          method: "DELETE",
+          headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
+          body: JSON.stringify({ applicationId: deleteTarget.id }),
+        });
+      }
+
+      const data = await res.json();
+      if (res.ok) {
+        toast.success(data.message);
+        refreshData();
+      } else {
+        toast.error(data.message || "Failed to delete.");
+      }
+    } catch (err) {
+      console.error("Delete error:", err);
+      toast.error("Server error occurred");
+    } finally {
+      setDeleteModalOpen(false);
+      setDeleteTarget({ type: null, id: null });
+    }
   };
 
   const renderDesktopTable = () => (
@@ -403,6 +384,26 @@ const ApplicationTable = ({ applications, companySlug, refreshData, currentUser 
           <Button onClick={handleConfirmHire} variant="contained" disabled={!selectedHireRole}>
             Confirm Hire
           </Button>
+        </DialogActions>
+      </Dialog>
+
+      <Dialog
+        open={deleteModalOpen}
+        onClose={() => setDeleteModalOpen(false)}
+        maxWidth="xs"
+        fullWidth
+      >
+        <DialogTitle sx={{ fontWeight: "bold" }}>Confirm Delete</DialogTitle>
+        <DialogContent>
+          <Typography>
+            {deleteTarget.type === "all"
+              ? "Are you sure you want to delete ALL applications? This action cannot be undone."
+              : "Are you sure you want to delete this application?"}
+          </Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setDeleteModalOpen(false)} color="inherit">Cancel</Button>
+          <Button onClick={handleConfirmDelete} variant="contained" color="error">Delete</Button>
         </DialogActions>
       </Dialog>
     </Box>
