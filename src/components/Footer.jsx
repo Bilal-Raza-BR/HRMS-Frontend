@@ -21,7 +21,7 @@ const Footer = () => {
             <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
               <BusinessCenterIcon sx={{ color: '#3b82f6', fontSize: '2.5rem', mr: 1 }} />
               <Typography variant="h5" fontWeight="bold" color="white">
-                BilalRaza HRMS
+                Nexus<Box component="span" sx={{ color: '#3b82f6' }}>HR</Box>
               </Typography>
             </Box>
             <Typography variant="body2" sx={{ color: '#94a3b8', maxWidth: '300px' }}>
@@ -68,7 +68,7 @@ const Footer = () => {
             <Typography variant="h6" fontWeight="semibold" color="white" sx={{ mb: 2 }}>
               Contact Us
             </Typography>
-            <Typography variant="body2" sx={{ mb: 1, color: '#94a3b8' }}>Email: contact@bilalraza-hrms.com</Typography>
+            <Typography variant="body2" sx={{ mb: 1, color: '#94a3b8' }}>Email: contact@nexushr.com</Typography>
             <Typography variant="body2" sx={{ mb: 1, color: '#94a3b8' }}>Phone: +1 (555) 123-4567</Typography>
             <Typography variant="body2" sx={{ color: '#94a3b8' }}>Address: 123 Tech Avenue, Silicon Valley, CA</Typography>
           </Grid>
@@ -84,7 +84,7 @@ const Footer = () => {
           }}
         >
           <Typography variant="body2" sx={{ color: '#94a3b8' }}>
-            © {new Date().getFullYear()} BilalRaza HRMS. All Rights Reserved.
+            © {new Date().getFullYear()} NexusHR. All Rights Reserved.
           </Typography>
         </Box>
       </Container>

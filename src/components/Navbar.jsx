@@ -81,11 +81,15 @@ const Navbar = ({ onLoginClick, onRequestClick }) => {
             <BusinessCenterIcon sx={{ color: '#3b82f6', fontSize: '2rem' }} />
           </motion.div>
           <Typography
-            variant="h6"
-            fontWeight="bold"
-            sx={{ color: '#0f172a', display: { xs: 'none', sm: 'block' } }}
+            variant="h5"
+            sx={{
+              display: { xs: 'none', sm: 'block' },
+              fontWeight: 800,
+              letterSpacing: '-0.5px',
+              color: '#0f172a',
+            }}
           >
-            BilalRaza HRMS
+            Nexus<Box component="span" sx={{ color: '#3b82f6' }}>HR</Box>
           </Typography>
         </Box>
 
